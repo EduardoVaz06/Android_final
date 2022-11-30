@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "391202384481",
+    "project_id": "meuprojeto-ac180",
+    "storage_bucket": "meuprojeto-ac180.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391202384481:android:21dfad44d78ce85e949820",
+        "android_client_info": {
+          "package_name": "br.edu.uniritter.mobile.appfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391202384481-vdrit14ltcfbpt11v4s5v5r0jqp0do23.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwcXs6Xgikmg96aUszLGYuGX94ejoLQPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "391202384481-vdrit14ltcfbpt11v4s5v5r0jqp0do23.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
