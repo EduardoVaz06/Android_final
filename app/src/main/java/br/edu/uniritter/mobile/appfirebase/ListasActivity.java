@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,11 +38,14 @@ public class ListasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_listas);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         recycler = findViewById(R.id.recycler);
+
         listas = new ArrayList<Listas>();
         //listas.add(new Listas("Eduardo", "Banana, maça"));
         //listas.add(new Listas("Jean", "Arroz, feijao"));
         listas.add(new Listas("Jean"));
         listas.add(new Listas("Eduardo"));
+        listas.add(new Listas("Fulano"));
+
         adapter = new ListaAdapter(ListasActivity.this, listas);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ListasActivity.this, LinearLayoutManager.VERTICAL, false);
         recycler.setLayoutManager(layoutManager);
@@ -54,10 +60,11 @@ public class ListasActivity extends AppCompatActivity {
 
         //mapeando uma lista de ingredientes
 
-        //Map<String, Object> lista = new HashMap<>();
-        //lista.put("nome", "Eduardo");
-        //lista.put("ingredientes", "Banana");
+       // Map<String, Object> lista = new HashMap<>();
+        //lista.put("nome", "Fulano");
+       // lista.put("ingredientes", "Arroz, Feijao");
         //db.collection("listas").add(lista);
+
         db.collection("listas").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -70,7 +77,17 @@ public class ListasActivity extends AppCompatActivity {
                     Log.w(TAG, "Error getting documents.", task.getException());
                 }
             }
+
         });
 
+    }
+    public void abrir_add_lista(View v){
+        Intent it_add_lista = new Intent(this,AddListaActivity.class);
+        startActivity(it_add_lista);
+    }
+
+    public void abrir_perfil(View v){
+        Intent it_perfil = new Intent(this, PerfilActivity.class);
+        startActivity(it_perfil);
     }
 }
