@@ -1,6 +1,7 @@
 package br.edu.uniritter.mobile.appfirebase;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,11 +13,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import br.edu.uniritter.mobile.appfirebase.config.ConfiguracaoFirebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -28,59 +40,44 @@ import br.edu.uniritter.mobile.appfirebase.Adapter.ListaAdapter;
 
 public class ListasActivity extends AppCompatActivity {
     private final String TAG = "ListasActivity";
-    private RecyclerView recycler;
-    private ListaAdapter adapter;
-    private ArrayList<Listas> listas;
+
+    List<Listas> lists;
+    RecyclerView recyclerView;
+    ListaAdapter listaAdapter;
+    DatabaseReference databaseReference;
+
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listas);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        recycler = findViewById(R.id.recycler);
 
-        listas = new ArrayList<Listas>();
-        //listas.add(new Listas("Eduardo", "Banana, maça"));
-        //listas.add(new Listas("Jean", "Arroz, feijao"));
-        listas.add(new Listas("Jean"));
-        listas.add(new Listas("Eduardo"));
-        listas.add(new Listas("Fulano"));
-
-        adapter = new ListaAdapter(ListasActivity.this, listas);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ListasActivity.this, LinearLayoutManager.VERTICAL, false);
-        recycler.setLayoutManager(layoutManager);
-        recycler.setAdapter(adapter);
+        recyclerView = findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        lists = new ArrayList<>();
+        databaseReference = ConfiguracaoFirebase.getFirebaseDatabase();
+        databaseReference.child("listas").addListenerForSingleValueEvent(new ValueEventListener() {
 
 
-        //mapeando uma lista de ingredientes
-
-        //Map<Integer, Ingrediente> lista = new HashMap<>();
-        //lista.put(l.getId(). l):
-        //lista.get(12) indice 12
-
-        //mapeando uma lista de ingredientes
-
-       // Map<String, Object> lista = new HashMap<>();
-        //lista.put("nome", "Fulano");
-       // lista.put("ingredientes", "Arroz, Feijao");
-        //db.collection("listas").add(lista);
-
-        db.collection("listas").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                Log.d(TAG, "onComplete: "+task.getResult());
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, document.getId() + " => " + document.getData());
-                    }
-                } else {
-                    Log.w(TAG, "Error getting documents.", task.getException());
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dn:snapshot.getChildren()){
+                    Listas u = dn.getValue(Listas.class);
+                    lists.add(u);
                 }
+                listaAdapter = new ListaAdapter(lists);
+                recyclerView.setAdapter(listaAdapter);
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
 
     }
+
     public void abrir_add_lista(View v){
         Intent it_add_lista = new Intent(this,AddListaActivity.class);
         startActivity(it_add_lista);

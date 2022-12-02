@@ -21,8 +21,10 @@ import java.util.Map;
 public class AddListaActivity extends AppCompatActivity {
     private EditText edit_nome, edit_itens;
     private Button criar;
+    private FirebaseAuth mAuth;
     String[] mensagens = {"Preencha todos os campos", "Lista criada"};
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private Listas l;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,10 @@ public class AddListaActivity extends AppCompatActivity {
                 }else{
                     CriarLista(v);
                     Intent intent = new Intent(AddListaActivity.this, ListasActivity.class);
+                    Snackbar snackbar = Snackbar.make(v, mensagens[1],Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(Color.WHITE);
+                    snackbar.setTextColor(Color.BLACK);
+                    snackbar.show();
                     startActivity(intent);
                 }
             }
@@ -61,7 +67,7 @@ public class AddListaActivity extends AppCompatActivity {
         lista.put("ingredientes", itens);
         db.collection("listas").add(lista);
 
-        Snackbar snackbar = Snackbar.make(v, mensagens[1],Snackbar.LENGTH_SHORT);
+
 
     }
 
