@@ -1,5 +1,6 @@
 package br.edu.uniritter.mobile.appfirebase.Adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,35 +9,40 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.uniritter.mobile.appfirebase.Listas;
 import br.edu.uniritter.mobile.appfirebase.R;
 
 
-public class ListaAdapter extends RecyclerView.Adapter{
+public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.MyViewHolder>{
 
-    List<Listas> listas;
+    Context context;
+    ArrayList<Listas> listas;
 
-    public ListaAdapter(List<Listas> listas) {
-        this.listas = listas;
+    public ListaAdapter(Context context) {
+        this.context = context;
+        this.listas = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-       View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_item, parent, false);
-       ViewHolderClass vhClass = new ViewHolderClass(view);
-       return vhClass;
+    public ListaAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+       View v = LayoutInflater.from(context).inflate(R.layout.lista_item, parent, false);
+
+       return new MyViewHolder(v);
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ViewHolderClass vhClass = (ViewHolderClass) holder;
+    public void onBindViewHolder(@NonNull ListaAdapter.MyViewHolder holder, int position) {
+
         Listas lista = listas.get(position);
-        vhClass.nomelista.setText(lista.getNome());
-        vhClass.itenslista.setText(lista.getItens());
+
+        holder.nome.setText(lista.nome);
+        holder.ingredientes.setText(lista.ingredientes);
 
     }
 
@@ -45,14 +51,17 @@ public class ListaAdapter extends RecyclerView.Adapter{
         return listas.size();
     }
 
-    public class ViewHolderClass extends RecyclerView.ViewHolder{
-        TextView nomelista;
-        TextView itenslista;
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
+        TextView nome, ingredientes;
 
-        public ViewHolderClass(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            nomelista = itemView.findViewById(R.id.nomelista);
-            itenslista = itemView.findViewById(R.id.itenslista);
+            nome = itemView.findViewById(R.id.nomelista);
+            ingredientes = itemView.findViewById(R.id.itenslista);
         }
+    }
+    public void addItem(Listas lista){
+        listas.add(lista);
+        this.notifyDataSetChanged();
     }
 }

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import br.edu.uniritter.mobile.appfirebase.Adapter.ListaAdapter;
 import br.edu.uniritter.mobile.appfirebase.config.ConfiguracaoFirebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,11 +22,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.DocumentReference;
@@ -43,8 +46,8 @@ public class ListasActivity extends AppCompatActivity {
 
     List<Listas> lists;
     RecyclerView recyclerView;
-    ListaAdapter listaAdapter;
-    DatabaseReference databaseReference;
+    ListaAdapter myAdapter;
+    FirebaseFirestore db;
 
 
     @SuppressLint("MissingInflatedId")
@@ -54,25 +57,39 @@ public class ListasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_listas);
 
         recyclerView = findViewById(R.id.recycler);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        lists = new ArrayList<>();
-        databaseReference = ConfiguracaoFirebase.getFirebaseDatabase();
-        databaseReference.child("listas").addListenerForSingleValueEvent(new ValueEventListener() {
 
+        db = FirebaseFirestore.getInstance();
+        myAdapter = new ListaAdapter(ListasActivity.this);
 
+        recyclerView.setAdapter(myAdapter);
+
+        EventChangeListener();
+    }
+
+    private void EventChangeListener(){
+
+        db.collection("listas").orderBy("nome", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>(){
+
+            @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dn:snapshot.getChildren()){
-                    Listas u = dn.getValue(Listas.class);
-                    lists.add(u);
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                if(error != null){
+
+                    Log.e("Firestore error", error.getMessage());
+                    return;
                 }
-                listaAdapter = new ListaAdapter(lists);
-                recyclerView.setAdapter(listaAdapter);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                for (DocumentChange dc : value.getDocumentChanges()){
+                    if (dc.getType() == DocumentChange.Type.ADDED){
 
+                        myAdapter.addItem(dc.getDocument().toObject(Listas.class));
+                    }
+
+                    myAdapter.notifyDataSetChanged();
+                }
             }
         });
 
