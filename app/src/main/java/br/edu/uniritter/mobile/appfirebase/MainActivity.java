@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements LoginPresenterCon
 
     @Override
     public void entrar() {
-        startActivity(new Intent(this, ListasActivity.class));
+        startActivity(new Intent(this, InicioActivity.class));
     }
 
     @Override

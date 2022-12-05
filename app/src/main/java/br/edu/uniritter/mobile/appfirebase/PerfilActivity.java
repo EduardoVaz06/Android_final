@@ -6,9 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -17,7 +18,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 
 import br.edu.uniritter.mobile.appfirebase.Adapter.MyAdapter;
 
@@ -26,7 +26,6 @@ public class PerfilActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     MyAdapter myAdapter;
     FirebaseFirestore db;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +62,13 @@ public class PerfilActivity extends AppCompatActivity {
 
                         myAdapter.addItem(dc.getDocument().toObject(User.class));
                     }
-
-                    myAdapter.notifyDataSetChanged();
                 }
             }
         });
+    }
+
+    public void voltar_inicio(View v){
+        Intent it_perfil = new Intent(this, InicioActivity.class);
+        startActivity(it_perfil);
     }
 }

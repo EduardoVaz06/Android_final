@@ -1,6 +1,5 @@
 package br.edu.uniritter.mobile.appfirebase;
 
-import br.edu.uniritter.mobile.appfirebase.config.ConfiguracaoFirebase;
 import com.google.firebase.database.DatabaseReference;
 
 public class Listas {

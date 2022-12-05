@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import br.edu.uniritter.mobile.appfirebase.Adapter.ListaAdapter;
-import br.edu.uniritter.mobile.appfirebase.config.ConfiguracaoFirebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +43,6 @@ import br.edu.uniritter.mobile.appfirebase.Adapter.ListaAdapter;
 public class ListasActivity extends AppCompatActivity {
     private final String TAG = "ListasActivity";
 
-    List<Listas> lists;
     RecyclerView recyclerView;
     ListaAdapter myAdapter;
     FirebaseFirestore db;
@@ -55,6 +53,7 @@ public class ListasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listas);
+
 
         recyclerView = findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
@@ -100,8 +99,9 @@ public class ListasActivity extends AppCompatActivity {
         startActivity(it_add_lista);
     }
 
-    public void abrir_perfil(View v){
-        Intent it_perfil = new Intent(this, PerfilActivity.class);
+    public void voltar_inicio(View v){
+        Intent it_perfil = new Intent(this, InicioActivity.class);
         startActivity(it_perfil);
     }
+
 }
