@@ -45,13 +45,4 @@ public class InicioActivity extends AppCompatActivity {
         });
     }
 
-    public void entrar() {
-        startActivity(new Intent(this, ListasActivity.class));
-    }
-
-    public void add_lista() {
-        startActivity(new Intent(this, AddListaActivity.class));
-    }
-
-    public void abrir_presenca() { startActivity(new Intent(this, PerfilActivity.class));}
 }

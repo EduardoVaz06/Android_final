@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="6dp"
-                android:text="SobrenomeEx"
+                android:text="email"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="6dp"
-                android:text="IdadeEx"
+                android:text="TelefoneEx"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
         </LinearLayout>

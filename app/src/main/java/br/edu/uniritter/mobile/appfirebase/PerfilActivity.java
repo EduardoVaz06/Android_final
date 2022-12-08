@@ -46,7 +46,7 @@ public class PerfilActivity extends AppCompatActivity {
 
     private void EventChangeListener() {
 
-        db.collection("Users").orderBy("firstName", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("Usuarios").orderBy("firstName", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -62,6 +62,7 @@ public class PerfilActivity extends AppCompatActivity {
 
                         myAdapter.addItem(dc.getDocument().toObject(User.class));
                     }
+                    myAdapter.notifyDataSetChanged();
                 }
             }
         });

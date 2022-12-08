@@ -47,8 +47,6 @@ public class ListasActivity extends AppCompatActivity {
     ListaAdapter myAdapter;
     FirebaseFirestore db;
 
-
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
